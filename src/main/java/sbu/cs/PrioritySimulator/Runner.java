@@ -2,10 +2,9 @@ package sbu.cs.PrioritySimulator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class Runner {
-
-    public static List<Message> messages = new ArrayList<>();
 
     /**
      * Simulate a priority system between Black, white, and blue threads.
@@ -30,45 +29,57 @@ public class Runner {
      * @param blueCount     number of blue threads
      * @param whiteCount    number of white threads
      */
-    public void run(int blackCount, int blueCount, int whiteCount) throws InterruptedException {
+
+    public static void run(int blackCount, int blueCount, int whiteCount) throws InterruptedException {
         List<ColorThread> colorThreads = new ArrayList<>();
 
         // TODO
+        CountDownLatch latch = new CountDownLatch(blackCount);
 
         for (int i = 0; i < blackCount; i++) {
-            BlackThread blackThread = new BlackThread();
+            BlackThread blackThread = new BlackThread(latch);
             colorThreads.add(blackThread);
             blackThread.start();
         }
+        latch.await();
 
         // TODO
-
+        latch = new CountDownLatch(blueCount);
         for (int i = 0; i < blueCount; i++) {
-            BlueThread blueThread = new BlueThread();
+            BlueThread blueThread = new BlueThread(latch);
             colorThreads.add(blueThread);
             blueThread.start();
         }
-
+        latch.await();
         // TODO
-
+        latch = new CountDownLatch(whiteCount);
         for (int i = 0; i < whiteCount; i++) {
-            WhiteThread whiteThread = new WhiteThread();
+            WhiteThread whiteThread = new WhiteThread(latch);
             colorThreads.add(whiteThread);
             whiteThread.start();
         }
 
         // TODO
+        latch.await();
+
     }
 
     synchronized public static void addToList(Message message) {
         messages.add(message);
     }
-
-    public List<Message> getMessages() {
+    public static List<Message> messages = new ArrayList<>();
+    public static List<Message> getMessages() {
         return messages;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // Use the main function to test the code yourself
+        int blackCount = 13;
+        int blueCount = 8;
+        int whiteCount = 5;
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+
+        run(blackCount,blueCount,whiteCount);
+        System.out.println(getMessages());
     }
 }
