@@ -22,6 +22,7 @@ public class Controller {
         Operator operator4 = new Operator("operator4");
         Operator operator5 = new Operator("operator5");
 
+
         operator1.start();
         operator2.start();
         operator3.start();
