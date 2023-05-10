@@ -3,11 +3,9 @@ import java.time.LocalTime;
 import java.util.concurrent.Semaphore;
 
 public class Operator extends Thread {
-
     public Operator(String name) {
         super(name);
     }
-
     @Override
     public void run() {
         Semaphore semaphore = new Semaphore(2);

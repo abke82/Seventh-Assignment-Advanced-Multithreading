@@ -1,5 +1,4 @@
 package sbu.cs.Semaphore;
-
 public class Controller {
 
     /**
@@ -16,7 +15,6 @@ public class Controller {
      lines of code, as long as you use a Semaphore to solve this problem.
      * Every time a thread accesses the resource, print its name and the system time.
      */
-
     public static void main(String[] args) {
         Operator operator1 = new Operator("operator1");
         Operator operator2 = new Operator("operator2");
